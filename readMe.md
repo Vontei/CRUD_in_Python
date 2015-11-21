@@ -125,3 +125,72 @@ admin.site.register(Note)
 
 * That was pretty quick, and there are a lot of freebies here.  You now have full interactivity with your
 standard SQL Lite DB and models.  Pretty awesome.
+
+* The admin features at the reserved /admin are really useful, and there is plenty more you can do.  If you want to
+learn more about customizing your admin dashboard [Go Here](https://docs.djangoproject.com/en/1.8/intro/tutorial02/).  But let's move on to the heart of the app.
+
+
+
+
+### Views & URLS
+
+Views in Django are like every other framework you have worked with.  Views are rendered after being called by a function that maps the URL pattern to its associated view.  In Django, they use 'URLConfs' which is just URL configuration in python.  To get a deeper understanding, [read this...](https://docs.djangoproject.com/en/1.8/topics/http/urls/)
+
+Go to views.py and put this in:
+
+```
+from django.http import HttpResponse
+
+
+def index(request):
+    return HttpResponse("Django Unchained")
+```
+This is the index function that is, at least for now, going to render a string to the page.  But, we need to map this function to an actual URL so that we can access it.
+
+If you don't already have a notes/urls.py ... create it.
+So go to notes/urls.py and put this in:
+
+```
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+]
+
+```
+You just imported the views to the URLS files and have used a regular expression to clean the url(in this case it is the 'index' so it reduces to '/'), are returning the string you provided, have named it the index so identify it for later.
+
+Regular expressions are weird, and for the most part Django uses the same conventions over and over, so you will not have to write many custom Regexs. BUt, they're awesome and you should want to... get started by reading through this pretty well documented [wikipedia page.](https://en.wikipedia.org/wiki/Regular_expression)
+
+Now go to YourAppName/urls.py and include this in the URL Patterns array:
+```
+url(r'^notes/', include('notes.urls'))
+
+```
+
+You are saying... when I go to the /notes path, use the associated view found in notes.urls.  Now check it out in the browser, voila.
+
+
+Now lets say you want to add another route on top of the notes path and you want to be able to pass it a parameter like an Id.  Since we have already specified in our YourAppName/urls.py that anything in notes will be routed to /notes/  all we have to do is add another URL mapping in our notes/urls.py and another method inside of views.py.
+
+
+
+urls.py
+```
+url(r'^(?P<note_id>[0-9]+)/$', views.detail, name='detail'),
+
+```
+The regular expression allows a number to be passed as the argument, and uses the detail method.
+
+views.py
+```
+def detail(request, note_id):
+    return HttpResponse("This is note %s." % note_id)
+
+```
+
+Detail takes a second argument, in this case the id we provide, and returns the HTTP response with the number that we have passed into the URL   /notes/SomeNumber.
+
+
+Now go to the browser and check it out, it should change and update every time you pass it a new number.
+Thats the basis of restful routing in Django.

@@ -1,6 +1,9 @@
-# Crud in Python and Django
+# CRUD in Python and Django
 
+This is a basic introduction to the Django Web Framework in Python. Django was developed in a newsroom. As you get acquainted with it, it becomes obvious that it was built for a fast paced environment that requires rapid development with easy management and administration, security, and database toolsets. Django is fast and lightweight and follows many of the same conventions as frameworks like Rails. With that in mind, almost every core functionality you would want in a framework is available for import.
+ 
 
+Let's get started:
 1. Download the latest version of Python
 2. brew install python (pip comes with HomeBrew)
 3. pip install django
@@ -27,9 +30,6 @@ class Note(models.Model):
 These models in models.py will create the database schema and the access API for accessing the objects.
 
 
-```
-
-```
 Now in settings.py add the models folder, in this case.. "notes" to:
 ```
 INSTALLED_APPS = (
